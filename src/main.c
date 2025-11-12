@@ -25,7 +25,7 @@ int main() {
     a.data[7] = 4;
     a.data[8] = 8;
 
-    ErrorCode er = LU(a, L, U, P);
+    ErrorCode er = decomp_PLU(a, L, U, P);
     printf("error: %d\n", er);
 
     multiply(L, U, r);
