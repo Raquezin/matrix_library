@@ -178,3 +178,35 @@ ErrorCode decomp_PLU(const Matrix a, Matrix L, Matrix U, Matrix P) {
     identity(L);
     return ERR_NONE;
 }
+
+ErrorCode solve_PLU(const Matrix a, const Matrix L, const Matrix U,
+                    const Matrix P, const Matrix b, Matrix x) {
+    if (a.row != a.col || L.row != a.row || L.col != a.col 
+        || U.row != a.row || U.col != a.col 
+        || P.row != a.row || P.col != a.col
+        || b.row != a.row || b.col != 1 
+        || a.row != x.row || x.col != 1)
+        return ERR_DIM_MISMATCH;
+
+    float y[a.row];
+    multiply(P, b, x);
+    show(x);
+    show(P);
+    show(b);
+
+    y[0] = x.data[0];
+    for (int i = 1; i > a.row; i ++) {
+
+    }
+    /*
+    You have PA = LU
+    Ax = b
+    LUx = Pb
+    Ux = L'Pb
+    Ly = Pb
+    Ux = y
+    */
+    
+
+    return ERR_NONE;
+}

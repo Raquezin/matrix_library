@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
 # Add -g for debugging
-CFLAGS = -Wall -Wextra -pedantic -Iinclude
+CFLAGS = -Wall -Wextra -pedantic -Iinclude -g
 LDFLAGS = -lm
 
 # Directories
