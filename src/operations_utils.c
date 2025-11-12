@@ -5,12 +5,13 @@
 #include "matrix.h"
 #include "errores.h"
 
-void identity(Matrix a) {
+ErrorCode identity(Matrix a) {
     if (a.row != a.col)
-        return;
+        return ERR_DIM_MISMATCH;
     for (int i = 0; i < a.row; i++) {
         a.data[i * a.col + i] = 1;
     }
+    return ERR_NONE;
 }
 
 void fill(Matrix a, const float n) {
@@ -26,8 +27,11 @@ void random_fill(Matrix a, const float min, const float max) {
     }
 }
 
-void copy_matrix(const Matrix *a, Matrix *r) {
-    memcpy(r, a, sizeof(Matrix) + (a->row * a->col * sizeof(float)));
+ErrorCode copy_matrix(const Matrix *a, Matrix *r) {
+    if (a->row != r->row || a->col != r->col)
+        return ERR_DIM_MISMATCH;
+    memcpy(r->data, a->data, (a->row * a->col * sizeof(float)));
+    return ERR_NONE;
 }
 
 ErrorCode swaprow(Matrix* a, int f1, int f2) {

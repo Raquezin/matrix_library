@@ -5,8 +5,8 @@
 
 static MatrixRegistry registry = {.index = 0};
 
-void add_registry(Matrix m) {
-    registry.data[registry.index] = &m;
+void add_registry(float* data) {
+    registry.data[registry.index] = data;
     registry.index += 1; 
 }
 
@@ -21,14 +21,14 @@ Matrix create_matrix(const int rows, const int cols, const float val) {
         .data = data
     };
     
-    add_registry(m);
+    add_registry(data);
     fill(m, val);
     
     return m;
 }
 
 void free_registry() {
-    for (int i = 0; i < registry.index-1; i++){
-        free(registry.data[i]->data);
+    for (int i = 0; i < registry.index; i++){
+        free(registry.data[i]);
     }
 }
