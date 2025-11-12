@@ -10,7 +10,7 @@ typedef struct {
 } Matrix;
 
 typedef struct {
-    Matrix* data[REGISTRY_CAPACITY];
+    float* data[REGISTRY_CAPACITY];
     int index;
 } MatrixRegistry;
 

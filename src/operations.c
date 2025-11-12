@@ -3,6 +3,7 @@
 #include <math.h>
 #include "matrix.h"
 #include "operations.h"
+#include "operations_basic.h"
 #include "operations_utils.h"
 
 int echelon_form(const Matrix a, Matrix r) {
@@ -130,10 +131,50 @@ ErrorCode inverse(Matrix a, Matrix r){
     return ERR_NONE;
 }
 
-ErrorCode LU(const Matrix a, Matrix L, Matrix U, Matrix P) {
+ErrorCode decomp_PLU(const Matrix a, Matrix L, Matrix U, Matrix P) {
     if (a.row != a.col || L.row != a.row || L.col != a.col || U.row != a.row 
         || U.col != a.col || P.row != a.row || P.col != a.col)
         return ERR_DIM_MISMATCH;
 
+    copy_matrix(&a, &U);
+    fill(L, 0);
+    identity(P);
+
+    float factor;
+    int base_a, base_k;
+    int swap_count = 0;
+
+    for (int i = 0; i < a.row; i++) {
+        base_a = i * a.col;
+        if (U.data[base_a + i] == 0) { // pivote = 0, cambiar filas.
+            for (int t = i + 1; t < a.row; t++) {
+                if (U.data[t * a.col + i] != 0) {
+                    printf("cambio fila %d por %d\n", i + 1, t + 1);
+                    swap_count += 1;
+                    swaprow(&U, i, t);
+                    swaprow(&L, i, t);
+                    swaprow(&P, i, t);
+                    break;
+                }
+            }
+        }
+        // si sigue siendo 0, no podemos seguir.
+        if (U.data[base_a + i] == 0)
+            continue;
+
+        for (int k = i + 1; k < a.row; k++) {
+            base_k = k * a.col;
+            if (U.data[base_k + i] == 0)
+                continue;
+
+            factor = ((float)U.data[base_k + i] / U.data[base_a + i]);
+            L.data[base_k + i] = factor;
+            for (int j = i; j < a.col; j++) {
+                U.data[base_k + j] = U.data[base_k + j] + U.data[base_a + j] * -1 * factor;
+            }
+        }
+    }
+
+    identity(L);
     return ERR_NONE;
 }
