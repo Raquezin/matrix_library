@@ -69,7 +69,7 @@ ErrorCode inverse(Matrix a, Matrix r){
     float d;
     determinant(a, r, &d);
     
-    if (d == 0)
+    if (fabs(d) < 1e-9)
         return ERR_DET_0;
 
     fill(r, 0);
@@ -132,6 +132,10 @@ ErrorCode inverse(Matrix a, Matrix r){
 }
 
 ErrorCode decomp_PLU(const Matrix a, Matrix L, Matrix U, Matrix P) {
+    /*
+    You have PA = LU
+    Ax = b
+    */
     if (a.row != a.col || L.row != a.row || L.col != a.col || U.row != a.row 
         || U.col != a.col || P.row != a.row || P.col != a.col)
         return ERR_DIM_MISMATCH;
@@ -190,23 +194,30 @@ ErrorCode solve_PLU(const Matrix a, const Matrix L, const Matrix U,
 
     float y[a.row];
     multiply(P, b, x);
-    show(x);
-    show(P);
-    show(b);
 
-    y[0] = x.data[0];
-    for (int i = 1; i > a.row; i ++) {
+    int base;
+    for (int i = 0; i < a.row; i++) { // Ly = Pb
+        y[i] = x.data[i];
+        base = i * a.col;
+        for (int j = 0; j < i; j++) {
+            y[i] -= L.data[base + j]*y[j];
+        }
+    } 
 
-    }
-    /*
-    You have PA = LU
-    Ax = b
-    LUx = Pb
-    Ux = L'Pb
-    Ly = Pb
-    Ux = y
-    */
-    
-
+    for (int i = a.row - 1; i >= 0; i--) { // Ux = y
+        x.data[i] = y[i];
+        base = i * a.col;
+        for (int j = a.col - 1; j >= i + 1; j--) {
+            x.data[i] -= U.data[base + j]*x.data[j];
+        }
+        if (fabs(U.data[base + i]) < 1e-9) { 
+            if (fabs(x.data[i]) < 1e-9) { // Caso 0 = 0
+                    return ERR_INF_SOL;
+            } else { // Caso 0 = (no cero)
+                return ERR_NO_SOL;
+            }
+        }
+        x.data[i] /= U.data[base + i];
+    } 
     return ERR_NONE;
 }
