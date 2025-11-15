@@ -51,3 +51,18 @@ ErrorCode multiply(const Matrix a, const Matrix b, Matrix r) {
     
     return ERR_NONE;
 }
+
+ErrorCode transpose(const Matrix a, Matrix r) {
+    if (a.row != r.col || a.col != r.row)
+        return ERR_DIM_MISMATCH;
+
+    int base;
+    for (int j = 0; j < a.col; j++) {
+        base = j * a.row;
+        for (int i = 0; i < a.row; i++) {
+            r.data[base + i] = a.data[j + i * a.col];
+        }
+    }
+
+    return ERR_NONE;
+}

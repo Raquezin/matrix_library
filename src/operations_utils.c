@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 #include "operations_utils.h"
 #include "matrix.h"
 #include "errores.h"
@@ -21,6 +23,12 @@ void fill(Matrix a, const float n) {
 }
 
 void random_fill(Matrix a, const float min, const float max) {
+    static bool var = false;
+    if (!var) {
+        srand(time(NULL));
+        var = true;
+    }
+
     for (int i = 0; i < a.row * a.col; i++) {
         float scale = rand() / (float) RAND_MAX;
         a.data[i] = min + scale * (max - min);
@@ -72,5 +80,4 @@ int equals(const Matrix a, const Matrix b) {
             return 0; 
     }
     return 1;
-
 }
