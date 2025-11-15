@@ -4,6 +4,7 @@
 #include "operations_utils.h"
 
 static MatrixRegistry registry = {.index = 0};
+static Matrix default_matrix = {.row = 0, .col = 0, .data = NULL};
 
 void add_registry(float* data) {
     registry.data[registry.index] = data;
@@ -11,9 +12,10 @@ void add_registry(float* data) {
 }
 
 Matrix create_matrix(const int rows, const int cols, const float val) {
-    // if (registry.index < REGISTRY_CAPACITY - 1) return ;
+    if (rows < 0 || cols < 0) return default_matrix;
+    if (registry.index == REGISTRY_CAPACITY - 1) return default_matrix;
     float* data = (float*)calloc(rows*cols, sizeof(float));
-    // if (data == NULL) return NULL;
+    if (data == NULL) return default_matrix;
 
     Matrix m = {
         .row = rows, 

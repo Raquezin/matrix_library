@@ -7,6 +7,7 @@
 ErrorCode sum(const Matrix a, const Matrix b, Matrix r);
 ErrorCode rest(const Matrix a, const Matrix b, Matrix r);
 ErrorCode multiply(const Matrix a, const Matrix b, Matrix r);
+ErrorCode transpose(const Matrix a, Matrix* b);
 
 
 #endif // OPERATIONS_BASIC_H
