@@ -26,7 +26,7 @@ void random_fill(Matrix a, const float min, const float max) {
     static bool var = false;
     if (!var) {
         srand(time(NULL));
-        var = 1;
+        var = true;
     }
 
     for (int i = 0; i < a.row * a.col; i++) {
