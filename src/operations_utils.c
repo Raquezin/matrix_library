@@ -62,16 +62,3 @@ void show(const Matrix a) {
     }
     printf("------------------------\n");
 }
-
-int equals(const Matrix a, const Matrix b) {
-    if (a.row != b.row || a.col != b.col)
-        return 0;
-
-    for (int i = 0; i < a.row * a.col; i++) {
-        if (a.data[i] != b.data[i])
-            return 0; 
-    }
-    return 1;
-
-}
-
