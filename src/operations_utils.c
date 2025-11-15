@@ -24,7 +24,7 @@ void fill(Matrix a, const float n) {
 
 void random_fill(Matrix a, const float min, const float max) {
     static bool var = false;
-    if (var == 0) {
+    if (!var) {
         srand(time(NULL));
         var = 1;
     }
