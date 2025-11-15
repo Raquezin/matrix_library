@@ -53,7 +53,7 @@ ErrorCode multiply(const Matrix a, const Matrix b, Matrix r) {
 }
 
 ErrorCode transpose(const Matrix a, Matrix* b) {
-    if (a.row * a.col != b->row * b->col)
+    if (a.row != b->col || a.col != b->row)
         return ERR_DIM_MISMATCH;
 
     b->row = a.col;
