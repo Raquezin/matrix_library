@@ -85,3 +85,18 @@ void multiply_number(Matrix a, float n) {
         a.data[i] *= n;
     }
 }
+
+ErrorCode divide_number(Matrix a, float n) {
+    if (fabs(n) <= 1e-6) return ERR_DIV_BY_ZERO;
+    for (int64_t i = 0; i < a.row * a.col; i++) {
+        a.data[i] /= n;
+    }
+
+    return ERR_NONE;
+}
+
+void power_number(Matrix a, float n) {
+    for (int64_t i = 0; i < a.row * a.col; i++) {
+        a.data[i] = powf(a.data[i], n);
+    }
+}
