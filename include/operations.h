@@ -34,7 +34,7 @@ ErrorCode determinant(const Matrix a, Matrix r, float* det);
  *
  * @param a Matrix to invert.
  * @param r Result matrix (inverse).
- * @return ERR_NONE on success, ERR_DIM_MISMATCH if not square, ERR_DET_0 if not invertible.
+ * @return ERR_NONE on success, ERR_DIM_MISMATCH if not square, ERR_NOT_INVERTIBLE if not invertible.
  */
 ErrorCode inverse(Matrix a, Matrix r);
 
