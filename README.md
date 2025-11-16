@@ -51,7 +51,7 @@ Include the headers in your code:
 ```c
 #include "matrix.h"
 #include "operations_basic.h"
-// etc.
+// and other headers like operations_utils.h, operations.h
 
 int main() {
     Matrix a = create_matrix(2, 2, 1.0);
