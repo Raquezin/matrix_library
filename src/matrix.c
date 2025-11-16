@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "matrix.h"
 #include "operations_utils.h"
+#include "errores.h"
 
 static MatrixRegistry registry = {.index = 0};
 static Matrix default_matrix = {.row = 0, .col = 0, .data = NULL};
@@ -33,4 +34,33 @@ void free_registry() {
     for (int i = 0; i < registry.index; i++){
         free(registry.data[i]);
     }
+}
+
+ErrorCode save_matrix(const Matrix a, const char* filename) {
+    FILE* f = fopen(filename, "wb");
+    if (!f) return ERR_FILE_NOT_FOUND; 
+
+    fwrite(&a.row, sizeof(int), 1, f);
+    fwrite(&a.col, sizeof(int), 1, f);
+    fwrite(a.data, sizeof(float), a.row * a.col, f);
+
+    fclose(f);
+    return ERR_NONE;
+}
+
+Matrix load_matrix(const char* filename, ErrorCode* err) {
+    FILE* f = fopen(filename, "rb");
+    if (!f) {
+        *err = ERR_NONE; 
+        return default_matrix;
+    }
+
+    int rows, cols;
+    fread(&rows, sizeof(int), 1, f);
+    fread(&cols, sizeof(int), 1, f);
+    Matrix m = create_matrix(rows, cols, 0.0f);
+    fread(m.data, sizeof(float), rows * cols, f);
+    fclose(f);
+    *err = ERR_NONE;
+    return m;
 }
