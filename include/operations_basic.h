@@ -50,11 +50,6 @@ ErrorCode multiply(const Matrix a, const Matrix b, Matrix r);
  * @return ERR_NONE on success, ERR_DIM_MISMATCH if r dimensions are incorrect.
  */
 ErrorCode transpose(const Matrix a, Matrix r);
-void sum_number(Matrix a, float n);
-void rest_number(Matrix a, float n);
-void multiply_number(Matrix a, float n);
-ErrorCode divide_number(Matrix a, float n);
-void power_number(Matrix a, float n);
 
 /**
  * @brief Adds a scalar to all elements of the matrix.
