@@ -1,6 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include "errores.h"
+
 #define REGISTRY_CAPACITY 100
 
 /**
@@ -45,5 +47,24 @@ Matrix create_matrix(const int rows, const int cols, const float val);
  * Should be called at the end of the program to avoid memory leaks.
  */
 void free_registry();
+
+/**
+ * @brief Save a matrix to a binary file.
+ *
+ * @param a The matrix to save.
+ * @param filename Name of the file.
+ * @return Error code indicating the result of the operation.
+ */
+ErrorCode save_matrix(const Matrix a, const char *filename);
+
+/**
+ * @brief Load a matrix from a binary file.
+ *
+ * @param filename Name of the file.
+ * @param err Pointer to store the error code.
+ * @return The loaded matrix, or a default matrix in case of error.
+ */
+Matrix load_matrix(const char *filename, ErrorCode *err);
+
 
 #endif // MATRIX_H

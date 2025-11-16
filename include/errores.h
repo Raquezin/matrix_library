@@ -8,7 +8,8 @@ typedef enum {
     ERR_INF_SOL,
     ERR_NO_SOL,
     ERR_NOT_INVERTIBLE,
-    ERR_DIV_BY_ZERO
+    ERR_DIV_BY_ZERO,
+    ERR_FILE_NOT_FOUND
 } ErrorCode;
 
 #endif // ERRORES_H
