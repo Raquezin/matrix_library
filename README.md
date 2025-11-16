@@ -32,7 +32,7 @@ A C library for matrix operations, including basic, advanced, and utility functi
 - `ErrorCode determinant(Matrix a, Matrix r, float* det)`: Computes determinant.
 - `ErrorCode inverse(Matrix a, Matrix r)`: Computes inverse.
 - `ErrorCode decomp_PLU(Matrix a, Matrix L, Matrix U, Matrix P)`: PLU decomposition.
-- `ErrorCode solve_PLU(...)`: Solves linear systems.
+- `ErrorCode solve_PLU(const Matrix a, const Matrix L, const Matrix U, const Matrix P, const Matrix b, Matrix x)`: Solves linear systems.
 
 ## Compilation
 
