@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdint.h>
 #include "matrix.h"
 #include "operations.h"
 #include "operations_basic.h"
@@ -13,15 +14,15 @@ int echelon_form(const Matrix a, Matrix r) {
     copy_matrix(&a, &r);
 
     float factor;
-    int base_a, base_k ;
+    int64_t base_a, base_k ;
     int swap_count = 0;
 
-    for (int i = 0; i < a.row; i++) {
+    for (int64_t i = 0; i < a.row; i++) {
         base_a = i * a.col;
         if (r.data[base_a + i] == 0) { // pivote = 0, cambiar filas.
-            for (int t = i + 1; t < a.row; t++) {
+            for (int64_t t = i + 1; t < a.row; t++) {
                 if (r.data[t * a.col + i] != 0) {
-                    printf("cambio fila %d por %d\n", i + 1, t + 1);
+                    printf("cambio fila %ld por %ld\n", i + 1, t + 1);
                     swap_count += 1;
                     swaprow(&r, i, t);
                     break;
@@ -32,13 +33,13 @@ int echelon_form(const Matrix a, Matrix r) {
         if (r.data[base_a + i] == 0)
             continue;
             
-        for (int k = i + 1; k < a.row; k++) {
+        for (int64_t k = i + 1; k < a.row; k++) {
             base_k = k * a.col;
             if (r.data[base_k + i] == 0)
                 continue;
 
             factor = -1 * ((float)r.data[base_k + i] / r.data[base_a + i]);
-            for (int j = i; j < a.col; j++) {
+            for (int64_t j = i; j < a.col; j++) {
                 r.data[base_k + j] = r.data[base_k + j] + r.data[base_a + j] * factor;
             }
         }
@@ -52,7 +53,7 @@ ErrorCode determinant(const Matrix a, Matrix r, float* det) {
     int swap_count = echelon_form(a, r);
 
     *det = 1;
-    for (int i = 0; i < r.row; i++) {
+    for (int64_t i = 0; i < r.row; i++) {
         *det *= r.data[i * a.col + i];
     }
     if (swap_count % 2 != 0)
@@ -79,14 +80,14 @@ ErrorCode inverse(Matrix a, Matrix r){
     // copy_matrix(&a, &a_copy);
 
     float factor;
-    int base_a, base_k;
+    int64_t base_a, base_k;
 
-    for (int i = 0; i < a.row; i++) {
+    for (int64_t i = 0; i < a.row; i++) {
         base_a = i * a.col;
         if (a.data[base_a + i] == 0) { // pivote = 0, cambiar filas.
-            for (int t = i + 1; t < a.row; t++) {
+            for (int64_t t = i + 1; t < a.row; t++) {
                 if (a.data[t * a.col + i] != 0) {
-                    printf("cambio fila %d por %d\n", i + 1, t + 1);
+                    printf("cambio fila %ld por %ld\n", i + 1, t + 1);
                     swaprow(&a, i, t);
                     swaprow(&r, i, t);
                     break;
@@ -95,34 +96,34 @@ ErrorCode inverse(Matrix a, Matrix r){
         }
         if (a.data[base_a + i] != 1) {
             factor = a.data[base_a + i];
-            for (int j = 0; j < a.col; j++) {
+            for (int64_t j = 0; j < a.col; j++) {
                 a.data[base_a + j] = a.data[base_a + j] / factor;
                 r.data[base_a + j] = r.data[base_a + j] / factor;
             }
         }
-        for (int k = i + 1; k < a.row; k++) {
+        for (int64_t k = i + 1; k < a.row; k++) {
             base_k = k * a.col; 
             if (a.data[base_k + i] == 0)
                 continue;
 
             factor = -1 * ((float)a.data[base_k + i] / a.data[base_a + i]);
 
-            for (int j = 0; j < a.col; j++) {
+            for (int64_t j = 0; j < a.col; j++) {
                 a.data[base_k + j] = a.data[base_k + j] + a.data[base_a + j] * factor;
                 r.data[base_k + j] = r.data[base_k + j] + r.data[base_a + j] * factor;
             }
         }
     }
 
-    for (int i = a.row - 1; i > 0; i--) {
+    for (int64_t i = a.row - 1; i > 0; i--) {
         base_a = i * a.col;
-        for (int k = i - 1; k >= 0; k--) {
+        for (int64_t k = i - 1; k >= 0; k--) {
             base_k = k * a.col;
             if (a.data[base_k + i] == 0)
                 continue;
 
             factor = -1 * ((float)a.data[base_k + i] / a.data[base_a + i]);
-            for (int j = 0; j < a.col; j++) {
+            for (int64_t j = 0; j < a.col; j++) {
                 a.data[base_k + j] = a.data[base_k + j] + a.data[base_a + j] * factor;
                 r.data[base_k + j] = r.data[base_k + j] + r.data[base_a + j] * factor;
             }
@@ -145,15 +146,15 @@ ErrorCode decomp_PLU(const Matrix a, Matrix L, Matrix U, Matrix P) {
     identity(P);
 
     float factor;
-    int base_a, base_k;
+    int64_t base_a, base_k;
     int swap_count = 0;
 
-    for (int i = 0; i < a.row; i++) {
+    for (int64_t i = 0; i < a.row; i++) {
         base_a = i * a.col;
         if (U.data[base_a + i] == 0) { // pivote = 0, cambiar filas.
-            for (int t = i + 1; t < a.row; t++) {
+            for (int64_t t = i + 1; t < a.row; t++) {
                 if (U.data[t * a.col + i] != 0) {
-                    printf("cambio fila %d por %d\n", i + 1, t + 1);
+                    printf("cambio fila %ld por %ld\n", i + 1, t + 1);
                     swap_count += 1;
                     swaprow(&U, i, t);
                     swaprow(&L, i, t);
@@ -166,14 +167,14 @@ ErrorCode decomp_PLU(const Matrix a, Matrix L, Matrix U, Matrix P) {
         if (U.data[base_a + i] == 0)
             continue;
 
-        for (int k = i + 1; k < a.row; k++) {
+        for (int64_t k = i + 1; k < a.row; k++) {
             base_k = k * a.col;
             if (U.data[base_k + i] == 0)
                 continue;
 
             factor = ((float)U.data[base_k + i] / U.data[base_a + i]);
             L.data[base_k + i] = factor;
-            for (int j = i; j < a.col; j++) {
+            for (int64_t j = i; j < a.col; j++) {
                 U.data[base_k + j] = U.data[base_k + j] + U.data[base_a + j] * -1 * factor;
             }
         }
@@ -195,19 +196,19 @@ ErrorCode solve_PLU(const Matrix a, const Matrix L, const Matrix U,
     float y[a.row];
     multiply(P, b, x);
 
-    int base;
-    for (int i = 0; i < a.row; i++) { // Ly = Pb
+    int64_t base;
+    for (int64_t i = 0; i < a.row; i++) { // Ly = Pb
         y[i] = x.data[i];
         base = i * a.col;
-        for (int j = 0; j < i; j++) {
+        for (int64_t j = 0; j < i; j++) {
             y[i] -= L.data[base + j]*y[j];
         }
     } 
 
-    for (int i = a.row - 1; i >= 0; i--) { // Ux = y
+    for (int64_t i = a.row - 1; i >= 0; i--) { // Ux = y
         x.data[i] = y[i];
         base = i * a.col;
-        for (int j = a.col - 1; j >= i + 1; j--) {
+        for (int64_t j = a.col - 1; j >= i + 1; j--) {
             x.data[i] -= U.data[base + j]*x.data[j];
         }
         if (fabs(U.data[base + i]) < 1e-9) { 

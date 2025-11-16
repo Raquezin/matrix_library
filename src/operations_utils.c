@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <time.h>
 #include "operations_utils.h"
 #include "matrix.h"
@@ -10,14 +11,14 @@
 ErrorCode identity(Matrix a) {
     if (a.row != a.col)
         return ERR_DIM_MISMATCH;
-    for (int i = 0; i < a.row; i++) {
+    for (int64_t i = 0; i < a.row; i++) {
         a.data[i * a.col + i] = 1;
     }
     return ERR_NONE;
 }
 
 void fill(Matrix a, const float n) {
-    for (int i = 0; i < a.row * a.col; i++) {
+    for (int64_t i = 0; i < a.row * a.col; i++) {
         a.data[i] = n;
     }
 }
@@ -29,7 +30,7 @@ void random_fill(Matrix a, const float min, const float max) {
         var = true;
     }
 
-    for (int i = 0; i < a.row * a.col; i++) {
+    for (int64_t i = 0; i < a.row * a.col; i++) {
         float scale = rand() / (float) RAND_MAX;
         a.data[i] = min + scale * (max - min);
     }
@@ -60,10 +61,10 @@ ErrorCode swaprow(Matrix* a, int f1, int f2) {
 }
 
 void show(const Matrix a) {
-    int base;
-    for (int i = 0; i < a.row; i++) {
+    int64_t base;
+    for (int64_t i = 0; i < a.row; i++) {
         base = i * a.col;
-        for (int j = 0; j < a.col; j++) {
+        for (int64_t j = 0; j < a.col; j++) {
             printf("%5.2f ", a.data[base + j]);
         }
         printf("\n");
@@ -75,7 +76,7 @@ int equals(const Matrix a, const Matrix b) {
     if (a.row != b.row || a.col != b.col)
         return 0;
 
-    for (int i = 0; i < a.row * a.col; i++) {
+    for (int64_t i = 0; i < a.row * a.col; i++) {
         if (a.data[i] != b.data[i])
             return 0; 
     }
