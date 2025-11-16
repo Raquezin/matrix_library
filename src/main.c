@@ -9,5 +9,11 @@
 #define M_AT(m, r, c) (m->data[(r) * m->col + (c)])
 
 int main() {
+    Matrix a = create_matrix(3,3,3);
+    multiply_number(a,  30);
+    show(a);
+
+
+    free_registry();
     return 0;
 }
