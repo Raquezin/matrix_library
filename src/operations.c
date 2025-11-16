@@ -71,7 +71,7 @@ ErrorCode inverse(Matrix a, Matrix r){
     determinant(a, r, &d);
     
     if (fabs(d) < 1e-9)
-        return ERR_DET_0;
+        return ERR_NOT_INVERTIBLE;
 
     fill(r, 0);
     identity(r);
